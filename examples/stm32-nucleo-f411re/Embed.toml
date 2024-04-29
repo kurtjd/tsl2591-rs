@@ -1,0 +1,11 @@
+[default.general]
+chip = "STM32F411RETx"
+
+[default.rtt]
+enabled = true
+
+[default.gdb]
+enabled = false
+
+[default.reset]
+halt_afterwards = false
