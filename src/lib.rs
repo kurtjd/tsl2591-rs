@@ -93,8 +93,6 @@ pub enum Gain {
     Max = 0x30,
 }
 
-/*
-// Will become necessary when interrupts are implemented
 #[derive(Clone, Copy)]
 pub enum Persist {
     F0 = 0x00,
@@ -113,7 +111,7 @@ pub enum Persist {
     F50 = 0x0D,
     F55 = 0x0E,
     F60 = 0x0F,
-}*/
+}
 
 #[derive(Clone, Copy, Debug)]
 pub struct AlsData {
@@ -240,7 +238,10 @@ where
     }
 
     pub fn reset(&mut self) -> Result<(), Error<I::Error>> {
+        self.power_off()?;
         self.write(chip::reg::CONFIG, chip::config::SRESET)?;
+        self.power_on()?;
+
         Ok(())
     }
 
@@ -251,14 +252,47 @@ where
     }
 
     pub fn set_again(&mut self, gain: Gain) -> Result<(), Error<I::Error>> {
+        self.power_off()?;
         self.update(chip::reg::CONFIG, chip::config::AGAIN_MASK, gain as u8)?;
+        self.power_on()?;
+
         self.again = Self::map_again(gain);
         Ok(())
     }
 
     pub fn set_atime(&mut self, time: Integration) -> Result<(), Error<I::Error>> {
+        self.power_off()?;
         self.update(chip::reg::CONFIG, chip::config::ATIME_MASK, time as u8)?;
+        self.power_on()?;
+
         self.atime = Self::map_atime(time);
+        Ok(())
+    }
+
+    pub fn set_persist(&mut self, persist: Persist) -> Result<(), Error<I::Error>> {
+        self.power_off()?;
+        self.write(chip::reg::PERSIST, persist as u8)?;
+        self.power_on()?;
+
+        Ok(())
+    }
+
+    pub fn set_threshold(&mut self, lower: u16, upper: u16) -> Result<(), Error<I::Error>> {
+        // Is there a more idiomatic way to concatenate two arrays plus another value?
+        let lower = u16::to_le_bytes(lower);
+        let upper = u16::to_le_bytes(upper);
+        let buf = [
+            chip::cmd::NORMAL | chip::reg::AILTL,
+            lower[0],
+            lower[1],
+            upper[0],
+            upper[1],
+        ];
+
+        self.power_off()?;
+        self.i2c.write(chip::I2C_ADDR, &buf)?;
+        self.power_on()?;
+
         Ok(())
     }
 
@@ -344,5 +378,21 @@ where
             integer: (strength / cpl) as i32,
             fractional: (((strength % cpl) * 1_000_000) / cpl) as i32,
         })
+    }
+
+    pub fn enable_interrupt(&mut self, enable: bool) -> Result<(), Error<I::Error>> {
+        let aien = if enable {
+            chip::enable::AIEN_ON
+        } else {
+            chip::enable::AIEN_OFF
+        };
+
+        self.update(chip::reg::ENABLE, chip::enable::AIEN_MASK, aien)?;
+        Ok(())
+    }
+
+    pub fn clear_interrupt(&mut self) -> Result<(), Error<I::Error>> {
+        self.i2c.write(chip::I2C_ADDR, &[chip::cmd::CLEAR_INT])?;
+        Ok(())
     }
 }

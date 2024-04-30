@@ -4,8 +4,12 @@ A platform-agnostic driver written in Rust using embedded-hal for the TSL2591 I2
 # Status
 * Contains basic functionality for reading sensor data and converting to lux.
 * Supports changing ADC gain modes and integration time.
-* Currently implementing interrupt functionality
+* Supports interrupts with user-configurable persist filter and ADC thresholds.
 * Will work on improving interface and making code Rustier
+
+# How to Use
+Please see the NUCLEO-F411RE example for a general idea of how to use this driver. 
+Further documentation is currently being worked on.
 
 # Run
 An example is given for the STM32 Nucleo-F411RE board. To run it, use the command:  
