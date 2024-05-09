@@ -12,7 +12,7 @@ use stm32f4xx_hal::{
     pac::{self, interrupt},
     prelude::*,
 };
-use tsl2591_rs::{Gain, Integration, Lux, Persist, Tsl2591};
+use tsl2591_rs::{Gain, Integration, Persist, Tsl2591};
 
 // Must be global since needed by ISR
 static INT_PIN: Mutex<RefCell<Option<gpio::PC0<Input>>>> = Mutex::new(RefCell::new(None));
@@ -129,9 +129,13 @@ fn main() -> ! {
             tsl2591
                 .clear_interrupt()
                 .expect("Failed to clear interrupt");
-            let lux: Lux = tsl2591.get_lux(true).expect("Failed to get lux");
-            let lux = lux.integer as f32 + lux.fractional as f32 / 1_000_000f32;
-            rprintln!("Lux: {}", lux);
+            match tsl2591.get_lux(true) {
+                Ok(lux) => rprintln!(
+                    "Lux: {}",
+                    lux.integer as f32 + lux.fractional as f32 / 1_000_000f32
+                ),
+                Err(e) => rprintln!("Error: {:?}", e),
+            }
         }
     }
 }
