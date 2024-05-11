@@ -146,7 +146,7 @@ pub struct Tsl2591<I> {
     i2c: I,
     again: u16,
     atime: u16,
-    powered_on: bool,
+    pub powered_on: bool,
 }
 
 impl<I> Tsl2591<I>

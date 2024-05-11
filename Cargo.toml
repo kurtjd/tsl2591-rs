@@ -1,11 +1,16 @@
-workspace = { members = ["examples/stm32-nucleo-f411re"] }
+workspace = { members = ["examples/stm32-nucleo-f411re", "examples/stm32-nucleo-f411re-async"] }
 [package]
 name = "tsl2591-rs"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 bitfield = "0.15.0"
 embedded-hal = "1.0.0"
+
+# Necessary for async example, unfortunately these need to be declared in top-level toml file
+[patch.crates-io]
+embassy-time = { git = "https://github.com/embassy-rs/embassy" }
+embassy-executor = { git = "https://github.com/embassy-rs/embassy" }
+embassy-stm32 = { git = "https://github.com/embassy-rs/embassy" }
+embassy-sync = { git = "https://github.com/embassy-rs/embassy" }
