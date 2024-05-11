@@ -8,12 +8,10 @@ A platform-agnostic driver written in Rust using embedded-hal for the TSL2591 I2
 * Will work on improving interface and making code Rustier
 
 # How to Use
-Please see the NUCLEO-F411RE example for a general idea of how to use this driver. 
-Further documentation is currently being worked on.
+* See `examples/stm32-nucleo-f411re` for how to use this driver via polling.
+* See `examples/stm32-nucleo-f411re-async` for how to use this driver asynchronously via Embassy.
 
-# Run
-An example is given for the STM32 Nucleo-F411RE board. To run it, use the command:  
-`cargo embed --work-dir examples/stm32-nucleo-f411re/`
+Further documentation is currently being worked on.
 
 # License
 This driver is licensed under the MIT license and is completely free to use and modify.

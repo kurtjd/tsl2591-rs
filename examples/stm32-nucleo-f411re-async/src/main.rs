@@ -117,6 +117,7 @@ async fn main(spawner: Spawner) {
 
     // Change settings to something other than default
     let mut tsl2591 = Tsl2591::new(i2c).expect("Failed to init sensor");
+
     tsl2591
         .set_again(Gain::Med)
         .expect("Failed to set sensor gain");
