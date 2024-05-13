@@ -2,10 +2,10 @@
 chip = "STM32F411RETx"
 
 [default.rtt]
-enabled = true
-
-[default.gdb]
 enabled = false
 
+[default.gdb]
+enabled = true
+
 [default.reset]
-halt_afterwards = false
+halt_afterwards = true

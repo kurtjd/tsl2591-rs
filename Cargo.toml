@@ -6,7 +6,9 @@ edition = "2021"
 
 [dependencies]
 bitfield = "0.15.0"
+duplicate = "1.0.0"
 embedded-hal = "1.0.0"
+embedded-hal-async = "1.0.0"
 
 # Necessary for async example, unfortunately these need to be declared in top-level toml file
 [patch.crates-io]
@@ -14,3 +16,4 @@ embassy-time = { git = "https://github.com/embassy-rs/embassy" }
 embassy-executor = { git = "https://github.com/embassy-rs/embassy" }
 embassy-stm32 = { git = "https://github.com/embassy-rs/embassy" }
 embassy-sync = { git = "https://github.com/embassy-rs/embassy" }
+stm32f4xx-hal = {git = "https://github.com/kurtjd/stm32f4xx-hal/" }

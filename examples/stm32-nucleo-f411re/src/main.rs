@@ -40,7 +40,7 @@ fn main() -> ! {
         (scl, sda),
         Mode::Fast {
             frequency: 300.kHz(),
-            duty_cycle: DutyCycle::Ratio16to9,
+            duty_cycle: DutyCycle::Ratio2to1,
         },
         &clocks,
     );
@@ -63,7 +63,7 @@ fn main() -> ! {
      */
     loop {
         delay.delay_ms(1000);
-        let lux: Lux = tsl2591.get_lux(false).expect("Failed to get lux");
+        let lux: Lux = tsl2591.get_lux(true).expect("Failed to get lux");
         let lux = lux.integer as f32 + lux.fractional as f32 / 1_000_000f32;
         rprintln!("Lux: {}", lux);
     }
