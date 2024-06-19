@@ -16,4 +16,3 @@ embassy-time = { git = "https://github.com/embassy-rs/embassy" }
 embassy-executor = { git = "https://github.com/embassy-rs/embassy" }
 embassy-stm32 = { git = "https://github.com/embassy-rs/embassy" }
 embassy-sync = { git = "https://github.com/embassy-rs/embassy" }
-stm32f4xx-hal = {git = "https://github.com/kurtjd/stm32f4xx-hal/" }
